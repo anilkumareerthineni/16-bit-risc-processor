@@ -35,7 +35,7 @@ You can extract any module and its testbench from `testbenches.v` into a single 
 
 Example: ALU Testbench (with Icarus Verilog)
 
-1. Create a file `alu_tb.v`** containing:
+1. Create a file `alu_tb.v` containing:
    copy the module alu from alu.v and paste it into alu_tb.v
    copy testbench for alu from testbenches.v and paste it into alu_tb.v
 
