@@ -11,10 +11,10 @@ wire [15:0] instr;
 wire [2:0] reg_write_dest;
 wire [15:0] reg_write_data;
 wire [2:0] reg_read_addr1;
-wire [15:0] reg_read_data;
+wire [15:0] reg_read_data1;
 wire [2:0] reg_read_addr2;
 wire [15:0] reg_read_data2;
-wire [15:0] ext_im, read _data2;
+wire [15:0] ext_im, read_data2;
 wire [2:0] ALU_control;
 wire [15:0] ALU_out;
 wire zer0_falg;
@@ -31,7 +31,7 @@ initial begin
     pc_cur <= 16'd0;
 end
 
-assign pc2 = pc_current + 16'd2;
+assign pc2 = pc_cur + 16'd2;
 assign opcode = instr[15:12];
 
 instruction_mem im(.pc(pc_cur), .instr_out(instr));
@@ -54,7 +54,7 @@ assign ext_im = {instr[8:0],instr[8:0]};
 
 alu_control alu1(.ALU_op(alu_op), .opcode(opcode), .ALU_cnt(ALU_control));
 
-read_data2_mux read_data2mux1(alu_src.(alu_src), ext_im.(ext_im), reg_read_data2.(reg_read_data2), read_data2.(read_data2));
+read_data2_mux read_data2mux1(.alu_src(alu_src), .ext_im(ext_im), .reg_read_data2(reg_read_data2), .read_data2(read_data2));
 
 alu a(.a(reg_read_data1), .b(read_data2), .alu_sel(ALU_control), .result(ALU_out), .zero_flag(zero_falg));
 
@@ -70,7 +70,7 @@ assign pc_2bne = (bne_control == 1'b1) ? pc_bne : pc_2beq;
 assign jump_shift = {instr[12:7],10{instr[3]}};
 assign pc_j = {pc2[15:13],jump_shift};
 
-pc_next_mux pc_mux1(jump.(jump), pc_j.(pc_j), pc_2bne.(pc_2bne), pc_next.(pc_next));
+pc_next_mux pc_mux1(.jump(jump), .pc_j(pc_j), .pc_2bne(pc_2bne), .pc_next(pc_next));
 
 data_memory data_m(.clk(clk),
 .write_en(mem_write),
@@ -79,6 +79,6 @@ data_memory data_m(.clk(clk),
 .write_data(reg_read_data2),
 .read_data(mem_read_data));
 
-reg_write_data_mux reg_write_mux1(mem_to_reg.(mem_to_reg), mem_read_data.(mem_read_data), ALU_out.(ALU_out), reg_write_data.(reg_write_data));
+reg_write_data_mux reg_write_mux1(.mem_to_reg(mem_to_reg), .mem_read_data(mem_read_data), .ALU_out(ALU_out), .reg_write_data(reg_write_data));
 
 endmodule
