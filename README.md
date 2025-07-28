@@ -12,6 +12,7 @@ S-Type -- Store Instruction
 
  Project Structure:
 16-bit-risc-processor/
+rough sketch of risc processor
 All design modules + testbenches
 README.md (This file)
 
