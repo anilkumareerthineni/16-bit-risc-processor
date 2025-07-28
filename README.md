@@ -6,6 +6,8 @@ Instruction Set:
 16 bit istruction
 R-Type -- 4bits opcode , 3 bit operand address, 3 bit operand address, 3 bit destination address and remaining bits are offset
 J-Type -- 4 bits opcode and remaining offset
+B-Type -- Branch Instruction
+S-Type -- Store Instruction
 
 
  Project Structure:
