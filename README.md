@@ -1,6 +1,12 @@
 16-bit RISC Processor (Verilog)
 
-This repository contains the RTL design of a custom-built 16-bit RISC Processor written in Verilog. The processor is built with modular design principles and includes components such as the ALU, Register File, Control Unit, Memory units, and a complete Datapath integration. The design is **synthesizable** and testable via module-level testbenches.
+This repository contains the RTL design of a custom-built 16-bit RISC Processor written in Verilog. The processor is built with modular design principles and includes components such as the ALU, Register File, Control Unit, Memory units, and a complete Datapath integration. The design is synthesizable and testable via module-level testbenches.
+
+Instruction Set:
+16 bit istruction
+R-Type -- 4bits opcode , 3 bit operand address, 3 bit operand address, 3 bit destination address and remaining bits are offset
+J-Type -- 4 bits opcode and remaining offset
+
 
  Project Structure:
 16-bit-risc-processor/
