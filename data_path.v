@@ -1,5 +1,9 @@
 `include "data_path_modules.v"
-
+`include "alu.v"
+`include "alu_control.v"
+`include "instruction_mem.v"
+`include "register_file.v"
+`include "data.v"
 
 module data_path (input clk, 
 input jumps, beq, mem_read, mem_write, alu_src, reg_dst, mem_to_reg, reg_write, bne,
@@ -36,7 +40,7 @@ assign opcode = instr[15:12];
 
 instruction_mem im(.pc(pc_cur), .instr_out(instr));
 
-reg_write_mux mux1(select_line.(reg_dst), instr.(instr), reg_write_dest.(reg_write_dest));
+reg_write_mux mux1(.select_line(reg_dst), .instr(instr), .reg_write_dest(reg_write_dest));
 
 assign reg_read_addr1 = instr[11:9];
 assign reg_read_addr2 = instr[8:6];
