@@ -1,75 +1,104 @@
-16-bit RISC Processor (Verilog)
+# 16-bit RISC Processor (Verilog)
 
-This repository contains the RTL design of a custom-built 16-bit RISC Processor written in Verilog. The processor is built with modular design principles and includes components such as the ALU, Register File, Control Unit, Memory units, and a complete Datapath integration. The design is synthesizable and testable via module-level testbenches.
+This repository contains the RTL design of a custom-built **16-bit RISC Processor** written in **Verilog**. The processor follows a modular design approach and includes essential components like the ALU, Register File, Control Unit, Instruction and Data Memory, and an integrated Datapath. The design is fully synthesizable and verified through individual module-level testbenches.
 
-Instruction Set:
-16 bit istruction
-R-Type -- 4bits opcode , 3 bit operand address, 3 bit operand address, 3 bit destination address and remaining bits are offset
-J-Type -- 4 bits opcode and remaining offset
-B-Type -- Branch Instruction
-S-Type -- Store Instruction
+---
 
+## 📜 Instruction Set Format
 
- Project Structure:
+Each instruction is 16 bits wide. The processor supports multiple instruction formats:
+
+- **R-Type**:  
+  `4 bits opcode | 3 bits operand1 | 3 bits operand2 | 3 bits destination | offset`  
+  Used for arithmetic and logic operations.
+
+- **J-Type**:  
+  `4 bits opcode | 12 bits offset`  
+  Used for jump instructions.
+
+- **B-Type**:  
+  Used for **branch** instructions (e.g., BEQ, BNE).
+
+- **S-Type**:  
+  Used for **store** instructions.
+
+---
+
+## 📁 Project Structure
+
 16-bit-risc-processor/
-rough sketch of risc processor
-All design modules + testbenches
-README.md (This file)
-
-Modules Included:
-The processor is implemented as a collection of the following key modules:
-
- `alu`          Performs arithmetic, logic, shift operations. 
- `reg_file`     register bank with read/write access. 
- `instruction_mem` Provides instruction based on PC. 
- `data_memory`   Stores data for memory operations. 
- `alu_control`   Decodes ALU operations from instruction and control signals. 
- `data_path`     Connects all modules to perform complete instruction cycle. 
- `cu`            Control unit which decodes instruction and extracts control signals 
+├── design_modules/ # All individual Verilog design files
+├── testbenches.v # Contains all testbenches in a single file
+├── rough_sketch.png # Block diagram of the processor (optional)
+├── README.md # This file
 
 
- Testbenches:
+---
 
-All testbenches are included in a single Verilog file:  
-`testbenches.v`
+## ⚙️ Modules Included
 
-Each testbench:
-Uses `$dumpfile()` and `$dumpvars()` for waveform generation
-runs independently 
+The processor consists of the following key modules:
+
+- `alu`           – Performs arithmetic, logic, and shift operations.  
+- `reg_file`      – Register file with read and write access.  
+- `instruction_mem` – Supplies instructions based on program counter (PC).  
+- `data_memory`   – Handles memory read/write operations.  
+- `alu_control`   – Decodes ALU control signals based on instruction.  
+- `cu`            – Control unit to generate all required control signals.  
+- `data_path`     – integration of all above modules.
+- `risc_processor` - Top level module connecting data path and control unit to form requried risc processor.
+---
+
+## 🧪 Testbenches
+
+All module-level testbenches are included in a single file:  
+**`testbenches.v`**
+
+- Each testbench uses `$dumpfile()` and `$dumpvars()` for waveform generation.
+- You can simulate each testbench independently.
+
+---
+
+## 🔧 How to Compile and Simulate (Icarus Verilog Example)
+
+> Make sure you have **Icarus Verilog** and **GTKWave** installed.
+
+### ✅ Method 1: Copy Module + Testbench into Single File
+
+1. Create a file: `alu_tb.v`
+2. Copy the `alu` module from `alu.v` into `alu_tb.v`
+3. Copy the corresponding testbench from `testbenches.v` into `alu_tb.v`
+
+### ✅ Method 2: Use Include Directives
+
+`include "alu.v" in testbench.v
+
+▶️ Compile and Simulate
+
+1. Open terminal
+2. iverilog -o alu_tb alu_tb.v     # Compile
+vvp alu_tb                      # Run simulation
+gtkwave alu_tb.vcd             # (Optional) View waveforms
+3. Ensure the testbench contains:
+   initial begin
+  $dumpfile("alu_tb.vcd");
+  $dumpvars(0, <testbench_module_name>);
+   end
 
 
-How to Compile and Simulate:
+⭐ Features
 
-You can extract any module and its testbench from `testbenches.v` into a single verilog file and run them 
+1. 16-bit data path with word-aligned instructions
+2. Modular, easy-to-read Verilog code
+3. Supports: arithmetic, logic, memory, branch, and jump instructions
+4. Easy simulation and waveform viewing
 
-Example: ALU Testbench (with Icarus Verilog)
 
-1. Create a file `alu_tb.v` containing:
-   copy the module alu from alu.v and paste it into alu_tb.v
-   copy testbench for alu from testbenches.v and paste it into alu_tb.v
+🚀 Future Improvements
 
-2. Compile using Icarus Verilog:
-   sure you have icarus verilog compiler in your pc installed
-   go to terminal and write commands as below
-     Compile the code:
-      iverilog -o alu_tb alu_tb.v
-     Run the simulation:
-   vvp alu_tb
-   
-   View waveforms (Optional):
-     gtkwave alu_tb.vcd
-   
-Make sure the testbench includes:
-  verilog module instance of respective design
-  "$dumpfile("alu_tb.vcd");" and "$dumpvars(0, <testbench_module_name>);"  in initial block in testbench
+1. Add pipelining stages: IF, ID, EX, MEM, WB
+2. Extend instruction set with more opcodes
+3. Add forwarding and hazard detection logic
+4. Full integration testbench with instruction sequencing
 
-Features:
-  16-bit data path with word-aligned instructions
-  Modular and scalable design
-  BEQ, BNE, JUMP, memory and ALU operations supported
-  Easy-to-use simulation and waveform generation
 
-Future Improvements:
-  Add pipelining stages (IF, ID, EX, MEM, WB)
-  Add support for more instruction types
-  Include hazard detection and forwarding unit
